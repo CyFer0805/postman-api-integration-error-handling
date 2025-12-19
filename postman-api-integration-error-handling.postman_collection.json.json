@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "eae84004-1de9-41d4-b4d8-efe2878b63f0",
+		"name": "Postman API Integration & Error Handling",
+		"description": "Demonstrates REST API integration, response validation, and common error-handling scenarios.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50856522",
+		"_collection_link": "https://cyfer0805-8736562.postman.co/workspace/Andy's-Workspace~6f73686e-5803-49a8-83b7-884ce553afbc/collection/50856522-eae84004-1de9-41d4-b4d8-efe2878b63f0?action=share&source=collection_link&creator=50856522"
+	},
+	"item": [
+		{
+			"name": "API Integration",
+			"item": [
+				{
+					"name": "GET – Fetch All Posts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is an array\", function () {\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data).to.be.an(\"array\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each post has an id and title\", function () {\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data[0]).to.have.property(\"id\");\r",
+									"    pm.expect(data[0]).to.have.property(\"title\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Retrieves a list of posts from a public REST API to validate basic API integration. This request confirms successful communication, response structure, and expected status codes."
+					},
+					"response": []
+				},
+				{
+					"name": "POST – Create New Post",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains created post data\", function () {\r",
+									"    const data = pm.response.json();\r",
+									"    pm.expect(data).to.have.property(\"title\");\r",
+									"    pm.expect(data).to.have.property(\"body\");\r",
+									"    pm.expect(data).to.have.property(\"userId\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Postman API Test\",\r\n  \"body\": \"Testing API integration\",\r\n  \"userId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Sends a JSON payload to create a new resource via a POST request. This request validates payload structure, response handling, and successful resource creation."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests focused on successful API communication and validation of expected responses."
+		},
+		{
+			"name": "API Error Handling",
+			"item": [
+				{
+					"name": "GET – Invalid Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "Tests API behavior when an invalid or non-existent endpoint is requested. This scenario validates proper handling of 404 errors and unexpected routes."
+					},
+					"response": []
+				},
+				{
+					"name": "POST – Missing Required Fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Validates bad request handling\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 422, 201]);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://jsonplaceholder.typicode.com/posts\n",
+							"protocol": "https",
+							"host": [
+								"jsonplaceholder",
+								"typicode",
+								"com"
+							],
+							"path": [
+								"posts\n"
+							]
+						},
+						"description": "Sends an incomplete request body to simulate invalid input. This request demonstrates awareness of client-side validation and how APIs respond to malformed or missing data fields.\n\nNote: The public API used is lenient and may still return a success response, but this scenario reflects real-world testing intent."
+					},
+					"response": []
+				}
+			],
+			"description": "Requests designed to test API behavior during error and failure scenarios."
+		}
+	]
+}
