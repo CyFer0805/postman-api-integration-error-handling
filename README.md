@@ -94,6 +94,13 @@ api-integration-and-error-handling
     └── POST - Missing Required Fields
 ```
 
+### Sample Requests
+
+![GET Success](screenshots/get-fetch-all-posts-200.png)
+![404 Error](screenshots/get-invalid-endpoint-404.png)
+![POST Request](screenshots/post-create-new-post-response.png)
+
+
 ## How to Run This Project
 
 1. Clone or download this repository
